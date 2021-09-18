@@ -353,9 +353,9 @@ void ControllerServer::computeAndPublishVelocity()
     throw nav2_core::PlannerException("Failed to obtain robot pose");
   }
 
-  if (!progress_checker_->check(pose)) {
-    throw nav2_core::PlannerException("Failed to make progress");
-  }
+  // if (!progress_checker_->check(pose)) {
+  //   throw nav2_core::PlannerException("Failed to make progress");
+  // }
 
   nav_2d_msgs::msg::Twist2D twist = getThresholdedTwist(odom_sub_->getTwist());
 
@@ -399,7 +399,7 @@ void ControllerServer::publishVelocity(const geometry_msgs::msg::TwistStamped & 
     vel_publisher_->is_activated() &&
     this->count_subscribers(vel_publisher_->get_topic_name()) > 0)
   {
-    vel_publisher_->publish(std::move(cmd_vel));
+    // vel_publisher_->publish(std::move(cmd_vel));
   }
 }
 
