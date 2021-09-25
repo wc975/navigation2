@@ -20,6 +20,7 @@
 #include <vector>
 
 #include "geometry_msgs/msg/pose_stamped.hpp"
+#include "std_msgs/msg/string.hpp"
 #include "nav2_behavior_tree/behavior_tree_engine.hpp"
 #include "nav2_util/lifecycle_node.hpp"
 #include "nav2_msgs/action/navigate_to_pose.hpp"
@@ -87,6 +88,7 @@ protected:
 
   using ActionServer = nav2_util::SimpleActionServer<Action>;
 
+
   // Our action server implements the NavigateToPose action
   std::unique_ptr<ActionServer> action_server_;
 
@@ -106,6 +108,11 @@ protected:
    */
   void onGoalPoseReceived(const geometry_msgs::msg::PoseStamped::SharedPtr pose);
   rclcpp::Subscription<geometry_msgs::msg::PoseStamped>::SharedPtr goal_sub_;
+
+  void onCancelReceived(const std_msgs::msg::String::SharedPtr cancelnav);
+  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr cancel_sub_;
+
+
 
   /**
    * @brief Replace current BT with another one

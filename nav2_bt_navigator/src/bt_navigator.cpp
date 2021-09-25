@@ -111,6 +111,12 @@ BtNavigator::on_configure(const rclcpp_lifecycle::State & /*state*/)
     rclcpp::SystemDefaultsQoS(),
     std::bind(&BtNavigator::onGoalPoseReceived, this, std::placeholders::_1));
 
+  cancel_sub_ = create_subscription<std_msgs::msg::String>(
+    "cancel_nav",
+    rclcpp::SystemDefaultsQoS(),
+    std::bind(&BtNavigator::onCancelReceived, this, std::placeholders::_1));
+
+
   action_server_ = std::make_unique<ActionServer>(
     get_node_base_interface(),
     get_node_clock_interface(),
@@ -353,6 +359,15 @@ BtNavigator::onGoalPoseReceived(const geometry_msgs::msg::PoseStamped::SharedPtr
   nav2_msgs::action::NavigateToPose::Goal goal;
   goal.pose = *pose;
   self_client_->async_send_goal(goal);
+}
+
+void
+BtNavigator::onCancelReceived(const std_msgs::msg::String::SharedPtr cancelnav)
+{
+  std_msgs::msg::String temp=*cancelnav;
+    RCLCPP_INFO(get_logger(), "Navigation canceled by user");
+  action_server_->terminate_current();
+  
 }
 
 }  // namespace nav2_bt_navigator
