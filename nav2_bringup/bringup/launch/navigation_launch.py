@@ -40,6 +40,11 @@ def generate_launch_description():
                        'bt_navigator',
                        'waypoint_follower']
 
+    rviz_config_dir = os.path.join(
+    get_package_share_directory('nav2_bringup'),
+    'rviz',
+    'nav2_default_view.rviz')
+
     # Map fully qualified names to relative ones so the node's namespace can be prepended.
     # In case of the transforms (tf), currently, there doesn't seem to be a better alternative
     # https://github.com/ros/geometry2/issues/32
@@ -141,5 +146,12 @@ def generate_launch_description():
             parameters=[{'use_sim_time': use_sim_time},
                         {'autostart': autostart},
                         {'node_names': lifecycle_nodes}]),
+        Node(
+            package='rviz2',
+            executable='rviz2',
+            name='rviz2',
+            arguments=['-d', rviz_config_dir],
+            parameters=[{'use_sim_time': use_sim_time}],
+            output='screen'),
 
     ])
